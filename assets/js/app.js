@@ -11,6 +11,8 @@ let choice4 = document.querySelector("#choice4");
 // score container
 let scoreContainer = document.getElementById("#score");
 let score = 0;
+// current question counter
+let currentQuestion = 0;
 
 // questions, choices, answers
 const myQuestions = [
@@ -71,9 +73,13 @@ function timerStart() {
 
 // dynamically changes states of questions and choices
 function showQuestion() {
-  question.innerText = myQuestions[0].question;
-  choice1.innerText = myQuestions[0].choice1;
-  choice2.innerText = myQuestions[0].choice2;
-  choice3.innerText = myQuestions[0].choice3;
-  choice4.innerText = myQuestions[0].choice4;
+  question.innerText = myQuestions[currentQuestion].question;
+  choice1.innerText = myQuestions[currentQuestion].choice1;
+  choice2.innerText = myQuestions[currentQuestion].choice2;
+  choice3.innerText = myQuestions[currentQuestion].choice3;
+  choice4.innerText = myQuestions[currentQuestion].choice4;
 }
+
+// quizContainer.addEventListener("click", function(event)) {
+
+// }
