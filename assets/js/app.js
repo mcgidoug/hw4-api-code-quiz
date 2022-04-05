@@ -2,7 +2,7 @@
 let startButton = document.getElementById("startButton");
 let timer = document.getElementById("timer");
 // containers for quiz, question, answers
-let quizContainer = document.getElementById("#quiz");
+let quizContainer = document.getElementById("quiz");
 let question = document.querySelector("#question");
 let choice1 = document.querySelector("#choice1");
 let choice2 = document.querySelector("#choice2");
@@ -13,6 +13,8 @@ let scoreContainer = document.getElementById("#score");
 let score = 0;
 // current question counter
 let currentQuestion = 0;
+// start time global
+let startTime = 60;
 
 // questions, choices, answers
 const myQuestions = [
@@ -55,10 +57,63 @@ startButton.addEventListener("click", beginQuiz);
 function beginQuiz() {
   timerStart();
   showQuestion();
+  // looping through each button and adding event listener
+  document.querySelectorAll(".answerButton").forEach((item) => {
+    item.addEventListener("click", (event) => {
+      if (
+        event.currentTarget.innerText === myQuestions[currentQuestion].answer
+      ) {
+        score++;
+      } else {
+        startTime -= 10;
+      }
+      currentQuestion++;
+      if (currentQuestion > 3) {
+        endQuiz();
+      } else {
+        showQuestion();
+      }
+    });
+  });
+}
+// function to end quiz
+function endQuiz() {
+  let nameInput = document.createElement("input");
+  let scoreSubmit = document.createElement("button");
+  quizContainer.innerHTML = "";
+  nameInput.setAttribute("id", "nameInput");
+  scoreSubmit.setAttribute("id", "scoreSubmit");
+  scoreSubmit.innerText = "Submit";
+  quizContainer.append(nameInput);
+  quizContainer.append(scoreSubmit);
+  scoreSubmit.addEventListener("click", submitScore);
+  document.getElementById("startButton").remove();
+  startTime = 0;
+}
+// function to submit score at end
+function submitScore() {
+  let scores = [];
+  let name = document.getElementById("nameInput").value;
+  if (localStorage.getItem("scores")) {
+    scores = JSON.parse(localStorage.getItem("scores"));
+  }
+  scores.push({
+    name: name,
+    score: score,
+  });
+  localStorage.setItem("scores", JSON.stringify(scores));
+  displayScores(scores);
+}
+function displayScores(scores) {
+  quizContainer.innerHTML = "";
+  for (entry of scores) {
+    let scoreEntry = document.createElement("p");
+    scoreEntry.innerText = `Name: ${entry.name}, Score: ${entry.score}`;
+    quizContainer.append(scoreEntry);
+  }
 }
 // timer function
 function timerStart() {
-  let startTime = 60;
   let timeInterval;
   timeInterval = setInterval(function () {
     if (startTime >= 1) {
@@ -79,7 +134,3 @@ function showQuestion() {
   choice3.innerText = myQuestions[currentQuestion].choice3;
   choice4.innerText = myQuestions[currentQuestion].choice4;
 }
-
-// quizContainer.addEventListener("click", function(event)) {
-
-// }
