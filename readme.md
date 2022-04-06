@@ -10,4 +10,4 @@ https://mcgidoug.github.io/hw4-api-code-quiz/
 
 ## Screenshot
 
-![screenshot of webpage](../quiz-website-screenshot.png)
+![screenshot of webpage](./quiz-website-screenshot.png)
